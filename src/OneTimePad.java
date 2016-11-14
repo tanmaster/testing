@@ -202,6 +202,9 @@ public class OneTimePad {
         }
 
 
+
+    }
+}
         /*
         for (int[] arr :
                 wordsToCompare) {
@@ -210,12 +213,6 @@ public class OneTimePad {
             }
             System.out.println();
         }
-
-
-
-
-
-
 
 
 
@@ -574,9 +571,6 @@ public class OneTimePad {
             }
         }
 */
-
-    }
-}
 /*
     public static String[] hexToString(String[] arr) {
 
