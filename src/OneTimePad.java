@@ -13,6 +13,10 @@ public class OneTimePad {
                 "3823646A0E0B4A0818063128042543113014353C0316386F252415482006212F0A113D594A0202730D23106116131B3F120C2E42180D1751280B2E024C22324500372D3D2E1D693123253B3E1E0427032419370A742A27221E3D280768"
         };
 
+        /**
+         * Initialize the arrays with half the size of one of the Strings because 2 Characters in the string represent
+         * one value
+         */
         int[] numberOne = new int[stringsOneThree[0].length() / 2];
         int[] numberTwo = new int[stringsOneThree[0].length() / 2];
         int[] numberOneXORnumberTwo = new int[stringsOneThree[0].length() / 2];
@@ -26,13 +30,7 @@ public class OneTimePad {
             numberOneXORnumberTwo[i] = numberOne[i] ^ numberTwo[i];
             //System.out.printf(" " + numberOneXORnumberTwo[i]);
         }
-/*
-        String word = "test";
-        int[] wordNum = new int[word.length()];
-        for (int i = 0; i < wordNum.length; i++) {
-            wordNum[i] = Integer.parseInt(word.substring(i, i + 1), 16);
-        }
-*/
+
 
         /**
          * these are the first hundred words from this list:
@@ -166,7 +164,6 @@ public class OneTimePad {
         }
 
         ArrayList<String> results = new ArrayList<>();
-        helper = "";
 
         for (int[] arr :
                 wordsToCompare) {
@@ -200,7 +197,6 @@ public class OneTimePad {
                 }
             }
         }
-
 
 
     }
