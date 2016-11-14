@@ -1,6 +1,7 @@
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.NavigableMap;
+import java.util.UnknownFormatConversionException;
 
 /**
  * Created by Tan on 10.03.2016.
@@ -8,10 +9,109 @@ import java.util.NavigableMap;
 public class OneTimePad {
     public static void main(String[] args) {
         String[] stringsOneThree = new String[]{
-                "242C212E463D04061F123127563E02167801353C030C2622212E51097213382C1E1D3A57192F15250C21066F57311C33560A2B0F1C041B16204A39081921304514372234281C2C662A6C2E3F00152D0A394E3E11321D6F21002120462D04033C243970",
-                "23226828034E0F1F0D18743A1A3F0E1F3D037E6E2D06742B2139121A3B01282A520031124A7857625362133312161D3213073E0B0D0952032F093F470D3E741008223334220F2D2325382D2E52432C016B1A370A391A6F28146E390E07481925333F70"
+                "3A242623151A0F1B4456262C10331100311F376E110C741B2C2F030D21026D03130D7916196A06734723433218170076190F6A260D1706196E3C3B03093F740C08723539244A1C2822382D2E522A2C012C0A3D1576456F301A213E0368",
+                "3823646A0E0B4A0818063128042543113014353C0316386F252415482006212F0A113D594A0202730D23106116131B3F120C2E42180D1751280B2E024C22324500372D3D2E1D693123253B3E1E0427032419370A742A27221E3D280768"
         };
 
+        int[] numberOne = new int[stringsOneThree[0].length() / 2];
+        int[] numberTwo = new int[stringsOneThree[0].length() / 2];
+        int[] numberOneXORnumberTwo = new int[stringsOneThree[0].length() / 2];
+
+        for (int i = 0; i < stringsOneThree[0].length() / 2; i++) {
+            numberOne[i] = Integer.parseInt(stringsOneThree[0].substring(2 * i, 2 * i + 2), 16);
+            numberTwo[i] = Integer.parseInt(stringsOneThree[1].substring(2 * i, 2 * i + 2), 16);
+            numberOneXORnumberTwo[i] = numberOne[i] ^ numberTwo[i];
+            System.out.printf(" " + numberOneXORnumberTwo[i]);
+        }
+/*
+        String word = "test";
+        int[] wordNum = new int[word.length()];
+        for (int i = 0; i < wordNum.length; i++) {
+            wordNum[i] = Integer.parseInt(word.substring(i, i + 1), 16);
+        }
+*/
+        String helper = "776173206765687374206475";
+
+        String[] words = helper.split("\\n");
+
+        for (int i = 0; i < words.length; i++) {
+            words[i] = words[i] + "20";
+        }
+        ArrayList<int[]> wordsToCompare = new ArrayList<>();
+
+        for (int i = 0; i < words.length; i++) {
+            wordsToCompare.add(new int[words[i].length() / 2 ]);
+
+            for (int j = 0; j < words[i].length() / 2; j++) {
+                wordsToCompare.get(i)[j] = Integer.parseInt(words[i].substring(2 * j, 2 * j + 2), 16);
+            }
+
+
+        }
+
+        ArrayList<String> results = new ArrayList<>();
+        helper = "";
+        for (int[] arr :
+                wordsToCompare) {
+
+            for (int i = 0; i < numberOneXORnumberTwo.length - arr.length; i++) {
+                /*
+                System.out.printf("\"");
+                for (int j = 0; j < arr.length; j++) {
+                    System.out.printf("" + (char) arr[j]);
+                }
+                System.out.printf(" \": ");
+                */
+                helper ="";
+                for (int j = 0; j < arr.length; j++) {
+                    try {
+                        helper += (char) (numberOneXORnumberTwo[i + j] ^ arr[j]);
+                        //System.out.printf("" + (char) (numberOneXORnumberTwo[i + j] ^ arr[j]));
+
+                    } catch (UnknownFormatConversionException e) {
+                    }
+                }
+                results.add(helper);
+            }
+        }
+
+
+        for (String s :
+                results) {
+            for (int i = 0; i < s.length(); i++) {
+                if (i == s.length() - 1){
+                    System.out.println(s);
+                }
+                if (!Character.isLetterOrDigit(s.charAt(i))){
+                    break;
+                }
+            }
+        }
+
+
+        /*
+        for (int[] arr :
+                wordsToCompare) {
+            for (int i = 0; i < arr.length; i++) {
+                System.out.printf(" " + arr[i]);
+            }
+            System.out.println();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         BigInteger one = new BigInteger(stringsOneThree[0], 16);
         BigInteger three = new BigInteger(stringsOneThree[1], 16);
         BigInteger oneXORthree = one.xor(three);
@@ -23,18 +123,158 @@ public class OneTimePad {
         };
 
 
-        BigInteger two = new BigInteger(stringsFiveSeven[0], 16);
-        BigInteger four = new BigInteger(stringsFiveSeven[1], 16);
-        BigInteger fiveXORseven = two.xor(four);
+        BigInteger five = new BigInteger(stringsFiveSeven[0], 16);
+        BigInteger seven = new BigInteger(stringsFiveSeven[1], 16);
+        BigInteger fiveXORseven = five.xor(seven);
         System.out.println(fiveXORseven.toString(16));
 
-        String word = "68656c6c6f";
+        String word = "77696c6c";
         String longWord = "";
         String[] permutes = new String[word.length()];
-        String[] results = new String[permutes.length];
+        //String[] results = new String[permutes.length];
         String zeros = "0";
+        String buffer;
+
+        String helper = "746865\n" +
+                "6f66\n" +
+                "616e64\n" +
+                "746f\n" +
+                "61\n" +
+                "696e\n" +
+                "666f72\n" +
+                "6973\n" +
+                "6f6e\n" +
+                "74686174\n" +
+                "6279\n" +
+                "74686973\n" +
+                "77697468\n" +
+                "69\n" +
+                "796f75\n" +
+                "6974\n" +
+                "6e6f74\n" +
+                "6f72\n" +
+                "6265\n" +
+                "617265\n" +
+                "66726f6d\n" +
+                "6174\n" +
+                "6173\n" +
+                "796f7572\n" +
+                "616c6c\n" +
+                "68617665\n" +
+                "6e6577\n" +
+                "6d6f7265\n" +
+                "616e\n" +
+                "776173\n" +
+                "7765\n" +
+                "77696c6c\n" +
+                "686f6d65\n" +
+                "63616e\n" +
+                "7573\n" +
+                "61626f7574\n" +
+                "6966\n" +
+                "70616765\n" +
+                "6d79\n" +
+                "686173\n" +
+                "736561726368\n" +
+                "66726565\n" +
+                "627574\n" +
+                "6f7572\n" +
+                "6f6e65\n" +
+                "6f74686572\n" +
+                "646f\n" +
+                "6e6f\n" +
+                "696e666f726d6174696f6e\n" +
+                "74696d65\n" +
+                "74686579\n" +
+                "73697465\n" +
+                "6865\n" +
+                "7570\n" +
+                "6d6179\n" +
+                "77686174\n" +
+                "7768696368\n" +
+                "7468656972\n" +
+                "6e657773\n" +
+                "6f7574\n" +
+                "757365\n" +
+                "616e79\n" +
+                "7468657265\n" +
+                "736565\n" +
+                "6f6e6c79\n" +
+                "736f\n" +
+                "686973\n" +
+                "7768656e\n" +
+                "636f6e74616374\n" +
+                "68657265\n" +
+                "627573696e657373\n" +
+                "77686f\n" +
+                "776562\n" +
+                "616c736f\n" +
+                "6e6f77\n" +
+                "68656c70\n" +
+                "676574\n" +
+                "706d\n" +
+                "76696577\n" +
+                "6f6e6c696e65\n" +
+                "63\n" +
+                "65\n" +
+                "6669727374\n" +
+                "616d\n" +
+                "6265656e\n" +
+                "776f756c64\n" +
+                "686f77\n" +
+                "77657265\n" +
+                "6d65\n" +
+                "73\n" +
+                "7365727669636573\n" +
+                "736f6d65\n" +
+                "7468657365\n" +
+                "636c69636b\n" +
+                "697473\n" +
+                "6c696b65\n" +
+                "73657276696365\n" +
+                "78\n" +
+                "7468616e\n" +
+                "66696e64";
+
+        String[] words = helper.split("\\n");
+
+        ArrayList<String> results = new ArrayList<>();
+
+        //adds a " " to all  words
+        for (int i = 0; i < words.length; i++) {
+            words[i] += "20";
+        }
 
 
+        for (int j = 0; j < words.length; j++) {
+
+            for (int i = 0; i < stringsOneThree[0].length(); i += 2) {
+                if (2 * i + words[j].length() > oneXORthree.toString(16).length()) {
+                    break;
+                }
+                buffer = oneXORthree.toString(16).substring(i, i + words[j].length());
+
+                results.add(words[j] + ": " + (new BigInteger(buffer, 16).xor(new BigInteger(words[j], 16))).toString(16));
+
+
+            }
+
+        }
+
+
+        for (String s :
+                results) {
+            String asciiword = "";
+            System.out.println(s);
+            for (int i = 0; i < s.length() / 2; i++) {
+                //if (s.substring(2 * i, ) )
+            }
+
+
+        }
+
+
+/*
         for (int i = 0; i < stringsOneThree[0].length() / word.length() + 1; i++) {
             longWord += word;
         }
@@ -47,13 +287,13 @@ public class OneTimePad {
         }
         System.out.println();
 
-        /*
+
         for (int i = 0; i < permutes.length; i++) {
             results[i] = new BigInteger(permutes[i], 16).xor(oneXORthree).toString(16);
             System.out.println();
             System.out.println(results[i]);
         }
-*/
+/*
 
         for (int i = 0; i < permutes.length; i++) {
             results[i] = new BigInteger(permutes[i], 16).xor(fiveXORseven).toString(16);
