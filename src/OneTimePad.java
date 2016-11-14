@@ -158,6 +158,7 @@ public class OneTimePad {
             wordsToCompare.add(new int[words[i].length() / 2]);
 
             for (int j = 0; j < words[i].length() / 2; j++) {
+                //Splitting the String apart and storing their values in wordsToCompare. 2 Characters are one value
                 wordsToCompare.get(i)[j] = Integer.parseInt(words[i].substring(2 * j, 2 * j + 2), 16);
             }
 
@@ -166,26 +167,22 @@ public class OneTimePad {
 
         ArrayList<String> results = new ArrayList<>();
         helper = "";
+
         for (int[] arr :
                 wordsToCompare) {
 
             for (int i = 0; i < numberOneXORnumberTwo.length - arr.length; i++) {
-                /*
-                System.out.printf("\"");
-                for (int j = 0; j < arr.length; j++) {
-                    System.out.printf("" + (char) arr[j]);
-                }
-                System.out.printf(" \": ");
-                */
+
                 helper = "";
                 for (int j = 0; j < arr.length; j++) {
                     try {
+                        //Every loop, we shift by one value (i is offset)
                         helper += (char) (numberOneXORnumberTwo[i + j] ^ arr[j]);
-                        //System.out.printf("" + (char) (numberOneXORnumberTwo[i + j] ^ arr[j]));
 
                     } catch (UnknownFormatConversionException e) {
                     }
                 }
+                //result just gets stored in helper, no order whatsoever
                 results.add(helper);
             }
         }
@@ -198,7 +195,7 @@ public class OneTimePad {
                     System.out.println(s);
                 }
                 if (!Character.isLetterOrDigit(s.charAt(i))) {
-                    //i only want to print consecutive Strings that don't include any symbols
+                    //I only want to print consecutive Strings that don't include any symbols
                     break;
                 }
             }
