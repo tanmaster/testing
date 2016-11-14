@@ -17,11 +17,14 @@ public class OneTimePad {
         int[] numberTwo = new int[stringsOneThree[0].length() / 2];
         int[] numberOneXORnumberTwo = new int[stringsOneThree[0].length() / 2];
 
+        /**
+         * XOR'ing the two input strings. I tried the other ones too, these were just the last ones i tried.
+         * */
         for (int i = 0; i < stringsOneThree[0].length() / 2; i++) {
             numberOne[i] = Integer.parseInt(stringsOneThree[0].substring(2 * i, 2 * i + 2), 16);
             numberTwo[i] = Integer.parseInt(stringsOneThree[1].substring(2 * i, 2 * i + 2), 16);
             numberOneXORnumberTwo[i] = numberOne[i] ^ numberTwo[i];
-            System.out.printf(" " + numberOneXORnumberTwo[i]);
+            //System.out.printf(" " + numberOneXORnumberTwo[i]);
         }
 /*
         String word = "test";
@@ -30,111 +33,12 @@ public class OneTimePad {
             wordNum[i] = Integer.parseInt(word.substring(i, i + 1), 16);
         }
 */
-        String helper = "776173206765687374206475";
 
-        String[] words = helper.split("\\n");
-
-        for (int i = 0; i < words.length; i++) {
-            words[i] = words[i] + "20";
-        }
-        ArrayList<int[]> wordsToCompare = new ArrayList<>();
-
-        for (int i = 0; i < words.length; i++) {
-            wordsToCompare.add(new int[words[i].length() / 2 ]);
-
-            for (int j = 0; j < words[i].length() / 2; j++) {
-                wordsToCompare.get(i)[j] = Integer.parseInt(words[i].substring(2 * j, 2 * j + 2), 16);
-            }
-
-
-        }
-
-        ArrayList<String> results = new ArrayList<>();
-        helper = "";
-        for (int[] arr :
-                wordsToCompare) {
-
-            for (int i = 0; i < numberOneXORnumberTwo.length - arr.length; i++) {
-                /*
-                System.out.printf("\"");
-                for (int j = 0; j < arr.length; j++) {
-                    System.out.printf("" + (char) arr[j]);
-                }
-                System.out.printf(" \": ");
-                */
-                helper ="";
-                for (int j = 0; j < arr.length; j++) {
-                    try {
-                        helper += (char) (numberOneXORnumberTwo[i + j] ^ arr[j]);
-                        //System.out.printf("" + (char) (numberOneXORnumberTwo[i + j] ^ arr[j]));
-
-                    } catch (UnknownFormatConversionException e) {
-                    }
-                }
-                results.add(helper);
-            }
-        }
-
-
-        for (String s :
-                results) {
-            for (int i = 0; i < s.length(); i++) {
-                if (i == s.length() - 1){
-                    System.out.println(s);
-                }
-                if (!Character.isLetterOrDigit(s.charAt(i))){
-                    break;
-                }
-            }
-        }
-
-
-        /*
-        for (int[] arr :
-                wordsToCompare) {
-            for (int i = 0; i < arr.length; i++) {
-                System.out.printf(" " + arr[i]);
-            }
-            System.out.println();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        BigInteger one = new BigInteger(stringsOneThree[0], 16);
-        BigInteger three = new BigInteger(stringsOneThree[1], 16);
-        BigInteger oneXORthree = one.xor(three);
-        System.out.println(oneXORthree.toString(16));
-
-        String[] stringsFiveSeven = new String[]{
-                "021E6825084E3D0C0C18313A12371A5E7806393A0D43242325240248340C3F6E210036190F6A063D0162302F1812103318493E0D4C0F1D18204A33094C2C74010F21222432192029256C292C060437182A1C360B741F2626522F6D100B0C0F254B",
-                "3528242303180F490118786B563E06522B10392A4B43761B2C2302483B106D2F5217361A1A26022B45310A350204003F190764423E100102270B7A0E1F6D3A0A12722C28610B3B232A6C272C52072A0C3E1D7C581D1D6F2E016E2309164807334B"
-        };
-
-
-        BigInteger five = new BigInteger(stringsFiveSeven[0], 16);
-        BigInteger seven = new BigInteger(stringsFiveSeven[1], 16);
-        BigInteger fiveXORseven = five.xor(seven);
-        System.out.println(fiveXORseven.toString(16));
-
-        String word = "77696c6c";
-        String longWord = "";
-        String[] permutes = new String[word.length()];
-        //String[] results = new String[permutes.length];
-        String zeros = "0";
-        String buffer;
-
+        /**
+         * these are the first hundred words from this list:
+         * https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt
+         *
+         */
         String helper = "746865\n" +
                 "6f66\n" +
                 "616e64\n" +
@@ -235,6 +139,119 @@ public class OneTimePad {
                 "78\n" +
                 "7468616e\n" +
                 "66696e64";
+
+        String[] words = helper.split("\\n");
+
+        /**
+         * this loops adds a space after every word
+         * i tried it without this too...
+         * */
+        for (int i = 0; i < words.length; i++) {
+            words[i] = words[i] + "20";
+        }
+
+
+        //after being converted from ascii to int, the values are stored here
+        ArrayList<int[]> wordsToCompare = new ArrayList<>();
+
+        for (int i = 0; i < words.length; i++) {
+            wordsToCompare.add(new int[words[i].length() / 2]);
+
+            for (int j = 0; j < words[i].length() / 2; j++) {
+                wordsToCompare.get(i)[j] = Integer.parseInt(words[i].substring(2 * j, 2 * j + 2), 16);
+            }
+
+
+        }
+
+        ArrayList<String> results = new ArrayList<>();
+        helper = "";
+        for (int[] arr :
+                wordsToCompare) {
+
+            for (int i = 0; i < numberOneXORnumberTwo.length - arr.length; i++) {
+                /*
+                System.out.printf("\"");
+                for (int j = 0; j < arr.length; j++) {
+                    System.out.printf("" + (char) arr[j]);
+                }
+                System.out.printf(" \": ");
+                */
+                helper = "";
+                for (int j = 0; j < arr.length; j++) {
+                    try {
+                        helper += (char) (numberOneXORnumberTwo[i + j] ^ arr[j]);
+                        //System.out.printf("" + (char) (numberOneXORnumberTwo[i + j] ^ arr[j]));
+
+                    } catch (UnknownFormatConversionException e) {
+                    }
+                }
+                results.add(helper);
+            }
+        }
+
+
+        for (String s :
+                results) {
+            for (int i = 0; i < s.length(); i++) {
+                if (i == s.length() - 1) {
+                    System.out.println(s);
+                }
+                if (!Character.isLetterOrDigit(s.charAt(i))) {
+                    //i only want to print consecutive Strings that don't include any symbols
+                    break;
+                }
+            }
+        }
+
+
+        /*
+        for (int[] arr :
+                wordsToCompare) {
+            for (int i = 0; i < arr.length; i++) {
+                System.out.printf(" " + arr[i]);
+            }
+            System.out.println();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        BigInteger one = new BigInteger(stringsOneThree[0], 16);
+        BigInteger three = new BigInteger(stringsOneThree[1], 16);
+        BigInteger oneXORthree = one.xor(three);
+        System.out.println(oneXORthree.toString(16));
+
+        String[] stringsFiveSeven = new String[]{
+                "021E6825084E3D0C0C18313A12371A5E7806393A0D43242325240248340C3F6E210036190F6A063D0162302F1812103318493E0D4C0F1D18204A33094C2C74010F21222432192029256C292C060437182A1C360B741F2626522F6D100B0C0F254B",
+                "3528242303180F490118786B563E06522B10392A4B43761B2C2302483B106D2F5217361A1A26022B45310A350204003F190764423E100102270B7A0E1F6D3A0A12722C28610B3B232A6C272C52072A0C3E1D7C581D1D6F2E016E2309164807334B"
+        };
+
+
+        BigInteger five = new BigInteger(stringsFiveSeven[0], 16);
+        BigInteger seven = new BigInteger(stringsFiveSeven[1], 16);
+        BigInteger fiveXORseven = five.xor(seven);
+        System.out.println(fiveXORseven.toString(16));
+
+        String word = "77696c6c";
+        String longWord = "";
+        String[] permutes = new String[word.length()];
+        //String[] results = new String[permutes.length];
+        String zeros = "0";
+        String buffer;
+
+        String helper =
 
         String[] words = helper.split("\\n");
 
