@@ -5,35 +5,29 @@ import java.util.Scanner;
  * Created by Tan on 10.03.2016.
  * This is a small program that can be used to break Many-Time-Pads
  * The usage is pretty straight forward, just follow the console instructions.
+ * <p>
+ * Two example Ciphers:
+ * <p>
+ * 3823646A0E0B4A0818063128042543113014353C0316386F252415482006212F0A113D594A0202730D23106116131B3F120C2E42180D1751280B2E024C22324500372D3D2E1D693123253B3E1E0427032419370A742A27221E3D280768
+ * 3A242623151A0F1B4456262C10331100311F376E110C741B2C2F030D21026D03130D7916196A06734723433218170076190F6A260D1706196E3C3B03093F740C08723539244A1C2822382D2E522A2C012C0A3D1576456F301A213E0368
+ * <p>
+ * Plain texts (I don't know which is which!)):
+ * <p>
+ * On, he appears cheerful and relaxed. He has avoided the fate of fellow whistleblower Chelsea.
+ * Minister, referring to Theresa May as a "a sort of Darth Vader in the United Kingdom", whose.
  */
 public class OneTimePad {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String[] cipherStrings = new String[2];
 
-        /**
-         * Two example Ciphers:
-         *
-         * 3823646A0E0B4A0818063128042543113014353C0316386F252415482006212F0A113D594A0202730D23106116131B3F120C2E42180D1751280B2E024C22324500372D3D2E1D693123253B3E1E0427032419370A742A27221E3D280768
-         * 3A242623151A0F1B4456262C10331100311F376E110C741B2C2F030D21026D03130D7916196A06734723433218170076190F6A260D1706196E3C3B03093F740C08723539244A1C2822382D2E522A2C012C0A3D1576456F301A213E0368
-         *
-         * Plain texts (I don't know which is which!)):
-         *
-         * On, he appears cheerful and relaxed. He has avoided the fate of fellow whistleblower Chelsea.
-         * Minister, referring to Theresa May as a "a sort of Darth Vader in the United Kingdom", whose.
-         * */
-
-
-        /**
-         * Reading two ciphers
-         * */
-
+        //Reading two ciphers
         System.out.println("Enter Two Ciphers in Hex, separated by one Enter: ");
         cipherStrings[0] = in.nextLine();
         cipherStrings[1] = in.nextLine();
 
 
-        /**
+        /*
          * Initialize the arrays with half the size of one of the Strings because 2 Characters in the string represent
          * one value
          */
@@ -41,9 +35,9 @@ public class OneTimePad {
         int[] numberTwo = new int[cipherStrings[0].length() / 2];
         int[] numberOneXORnumberTwo = new int[cipherStrings[0].length() / 2];
 
-        /**
+        /*
          * XOR'ing the two input strings. I tried the other ones too, these were just the last ones i tried.
-         * */
+         */
         for (int i = 0; i < cipherStrings[0].length() / 2; i++) {
             numberOne[i] = Integer.parseInt(cipherStrings[0].substring(2 * i, 2 * i + 2), 16);
             numberTwo[i] = Integer.parseInt(cipherStrings[1].substring(2 * i, 2 * i + 2), 16);
@@ -55,9 +49,9 @@ public class OneTimePad {
         String messageOne = "", messageTwo = "", word;
 
 
-        /**
+        /*
          * Creating empty messages
-         * */
+         */
         for (int i = 0; i < cipherStrings[0].length() / 2; i++) {
             messageOne += "_";
             messageTwo += "_";
@@ -105,23 +99,20 @@ public class OneTimePad {
 
                 for (int j = 0; j < output.get(i).length(); j++) {
                     if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' ') {
-                        /**
+                        /*
                          * this if is bad because it breaks at Characters like commas, spaces or exclamation marks
                          * therefore not every possible solution is being highlighted
-                         * */
+                         */
                         break;
                     }
                     if (j == output.get(i).length() - 1) {
-                        /**
-                         * if the loop has not 'broken' so far we will highlight the current line
-                         * */
+
+                        //if the loop has not 'broken' so far we will highlight the current line
                         System.out.printf("******* ");
                     }
                 }
 
-                /**
-                 * print index and output
-                 * */
+                //print index and output
                 System.out.println(i + ": " + output.get(i));
             }
 
@@ -151,9 +142,9 @@ public class OneTimePad {
                 System.out.println(index);
 
 
-                /**
-                 * Mix the current messages with the new found parts
-                 * */
+
+                 // Mix the current messages with the new found parts
+
                 if (k) {
                     messageOne = messageOne.substring(0, Integer.valueOf(index)) + output.get(Integer.valueOf(index)) +
                             messageOne.substring(Integer.valueOf(index) + output.get(Integer.valueOf(index)).length());
