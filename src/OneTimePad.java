@@ -28,7 +28,7 @@ public class OneTimePad {
          * Reading two ciphers
          * */
 
-        System.out.println("Enter Two Ciphers in Hex: ");
+        System.out.println("Enter Two Ciphers in Hex, separated by one Enter: ");
         cipherStrings[0] = in.nextLine();
         cipherStrings[1] = in.nextLine();
 
