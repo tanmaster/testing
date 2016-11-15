@@ -178,17 +178,6 @@ public class OneTimePad {
         System.out.println(xorStringsOfSameLength(cipherStrings[1], plainToHex(messageOne)));
 
 
-        /**
-         * XOR the "reverse engineered" messages with the original input Hex Strings.
-         * Since both were encrypted using the same key, the key is equal.
-         * if it is not equal, we XOR'ed the wrong message & Hex input String with each other
-         *
-        System.out.println("Your key is: " +
-                (xorStringsOfSameLength(cipherStrings[0], plainToHex(messageOne)).equals(xorStringsOfSameLength(cipherStrings[1], plainToHex(messageTwo))) ?
-                xorStringsOfSameLength(cipherStrings[0], plainToHex(messageOne)) :  xorStringsOfSameLength(cipherStrings[1], plainToHex(messageOne))));
-*/
-
-
     }
 
     /**
@@ -238,6 +227,13 @@ public class OneTimePad {
     }
 
 
+    /**
+     *
+     *
+     * @param upperBound the upper bound the pared integer can be max.
+     * @param str the String that shall be checked if numeric and if in bounds
+     * @return true if parsed integer is numeric and in bounds
+     * */
     private static boolean isNumericAndInBounds(String str, int upperBound) {
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) return false;
