@@ -1,16 +1,10 @@
-import com.sun.deploy.util.StringUtils;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
-import javax.imageio.IIOException;
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.NavigableMap;
 import java.util.Scanner;
-import java.util.UnknownFormatConversionException;
 
 /**
  * Created by Tan on 10.03.2016.
+ * This is a small programme that can be used to break Many-Time-Pads
+ * The usage is pretty straight forward, just follow the console instructions.
  */
 public class OneTimePad {
     public static void main(String[] args) {
@@ -18,11 +12,26 @@ public class OneTimePad {
         String[] cipherStrings = new String[2];
 
         /**
+         * Two example Ciphers:
+         *
+         * 3823646A0E0B4A0818063128042543113014353C0316386F252415482006212F0A113D594A0202730D23106116131B3F120C2E42180D1751280B2E024C22324500372D3D2E1D693123253B3E1E0427032419370A742A27221E3D280768
+         * 3A242623151A0F1B4456262C10331100311F376E110C741B2C2F030D21026D03130D7916196A06734723433218170076190F6A260D1706196E3C3B03093F740C08723539244A1C2822382D2E522A2C012C0A3D1576456F301A213E0368
+         *
+         * Plain texts (I don't know which is which!)):
+         *
+         * On, he appears cheerful and relaxed. He has avoided the fate of fellow whistleblower Chelsea.
+         * Minister, referring to Theresa May as a "a sort of Darth Vader in the United Kingdom", whose.
+         * */
+
+
+        /**
          * Reading two ciphers
          * */
+
         System.out.println("Enter Two Ciphers in Hex: ");
         cipherStrings[0] = in.nextLine();
         cipherStrings[1] = in.nextLine();
+
 
         /**
          * Initialize the arrays with half the size of one of the Strings because 2 Characters in the string represent
@@ -43,30 +52,51 @@ public class OneTimePad {
         }
 
 
-        String messageOne = "", messageTwo = "", word = "";
+        String messageOne = "", messageTwo = "", word;
 
 
+        /**
+         * Creating empty messages
+         * */
         for (int i = 0; i < cipherStrings[0].length() / 2; i++) {
             messageOne += "_";
             messageTwo += "_";
         }
 
+        boolean done = false, flag = false;
 
         while (true) {
 
-            System.out.println("Enter a word: ");
-            word = in.nextLine();
-
-            int[] wordToInt = new int[word.length()];
-            for (int i = 0; i < word.length(); i++) {
-                wordToInt[i] = ((int) (word.charAt(i)));
+            if (!done) {
+                for (int i = 0; i < messageOne.length(); i++) {
+                    if (messageOne.charAt(i) == '_') break;
+                    if (i == messageOne.length() - 1) done = flag = true;
+                }
             }
 
+            if (flag) {
+                System.out.println("Looks like you are done, do you want to stop and try to retrieve the key? (Y | N)");
+                word = in.nextLine();
+                if (word.equalsIgnoreCase("y")) {
+                    break;
+                } else if (word.equalsIgnoreCase("n")) flag = false;
+            }
+
+
+            System.out.println("Enter a word you want to test on occurrence or enter \"keysPlease\" to try and get your keys: ");
+            word = in.nextLine();
+            if (word.equalsIgnoreCase("keysplease")) {
+                break;
+            }
+
+
+            int[] intValuesOfWord = plainToIntArray(word);
+
             ArrayList<String> output = new ArrayList<>();
-            for (int i = 0; i < numberOneXORnumberTwo.length - (wordToInt.length - 1); i++) {
+            for (int i = 0; i < numberOneXORnumberTwo.length - (intValuesOfWord.length - 1); i++) {
                 output.add("");
-                for (int j = 0; j < wordToInt.length; j++) {
-                    output.set(i, output.get(i) + (char) (numberOneXORnumberTwo[i + j] ^ wordToInt[j]));
+                for (int j = 0; j < intValuesOfWord.length; j++) {
+                    output.set(i, output.get(i) + (char) (numberOneXORnumberTwo[i + j] ^ intValuesOfWord[j]));
 
                 }
             }
@@ -74,7 +104,7 @@ public class OneTimePad {
             for (int i = 0; i < output.size(); i++) {
 
                 for (int j = 0; j < output.get(i).length(); j++) {
-                    if (!Character.isLetter(output.get(i).charAt(j))) {
+                    if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' ') {
                         /**
                          * this if is bad because it breaks at Characters like commas, spaces or exclamation marks
                          * therefore not every possible solution is being highlighted
@@ -101,7 +131,7 @@ public class OneTimePad {
                 System.out.println("Enter index of String you want to choose or \"none\"");
                 index = in.nextLine();
             }
-            while (!index.equals("none") && !isNumericAndInBounds(index, output.size()));
+            while (index.equals("") || (!index.equals("none")  && !isNumericAndInBounds(index, output.size())));
 
             if (!index.equals("none")) {
 
@@ -143,6 +173,68 @@ public class OneTimePad {
         }
 
 
+        System.out.println("Two possible keys: ");
+        System.out.println(xorStringsOfSameLength(cipherStrings[0], plainToHex(messageOne)));
+        System.out.println(xorStringsOfSameLength(cipherStrings[1], plainToHex(messageOne)));
+
+
+        /**
+         * XOR the "reverse engineered" messages with the original input Hex Strings.
+         * Since both were encrypted using the same key, the key is equal.
+         * if it is not equal, we XOR'ed the wrong message & Hex input String with each other
+         *
+        System.out.println("Your key is: " +
+                (xorStringsOfSameLength(cipherStrings[0], plainToHex(messageOne)).equals(xorStringsOfSameLength(cipherStrings[1], plainToHex(messageTwo))) ?
+                xorStringsOfSameLength(cipherStrings[0], plainToHex(messageOne)) :  xorStringsOfSameLength(cipherStrings[1], plainToHex(messageOne))));
+*/
+
+
+    }
+
+    /**
+     * XOR's two HEX strings of same length!!!
+     * */
+    private static String xorStringsOfSameLength(String one, String two){
+        String result = "";
+        String helper;
+        for (int i = 0; i < one.length() / 2; i++) {
+            helper = Integer.toHexString(Integer.parseInt(one.substring(2 * i, 2 * i + 2), 16) ^ Integer.parseInt(two.substring(2 * i, 2 * i + 2), 16));
+            result += helper.length() == 1 ? "0" + helper : helper;
+        }
+
+        return result;
+
+    }
+
+
+    /**
+     * One Character in String will result in two Hex Digits
+     * */
+    private static String plainToHex(String string) {
+        String result = "";
+
+        for (int i = 0; i < string.length(); i++) {
+            result += Integer.toHexString(string.charAt(i));
+        }
+
+        return result;
+    }
+
+    /**
+     * Transforms a String to its ASCII values. Result array has same length as input String and contains a value
+     * between 0 and 255 (I think), one for each Character in string.
+     *
+     * @param string input string
+     * @return an array that contains the values of every Character of string
+     */
+    private static int[] plainToIntArray(String string) {
+
+        int[] wordToInt = new int[string.length()];
+        for (int i = 0; i < string.length(); i++) {
+            wordToInt[i] = ((int) (string.charAt(i)));
+        }
+
+        return wordToInt;
     }
 
 
