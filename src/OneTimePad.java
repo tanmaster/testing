@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 /**
  * Created by Tan on 10.03.2016.
- * This is a small programme that can be used to break Many-Time-Pads
+ * This is a small program that can be used to break Many-Time-Pads
  * The usage is pretty straight forward, just follow the console instructions.
  */
 public class OneTimePad {
