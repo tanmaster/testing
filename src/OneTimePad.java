@@ -49,9 +49,8 @@ public class OneTimePad {
         String messageOne = "", messageTwo = "", word;
 
 
-        /*
-         * Creating empty messages
-         */
+
+        //Creating empty messages
         for (int i = 0; i < cipherStrings[0].length() / 2; i++) {
             messageOne += "_";
             messageTwo += "_";
