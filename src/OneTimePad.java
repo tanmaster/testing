@@ -131,7 +131,7 @@ public class OneTimePad {
                 System.out.println("Enter index of String you want to choose or \"none\"");
                 index = in.nextLine();
             }
-            while (index.equals("") || (!index.equals("none")  && !isNumericAndInBounds(index, output.size())));
+            while (index.equals("") || (!index.equals("none") && !isNumericAndInBounds(index, output.size())));
 
             if (!index.equals("none")) {
 
@@ -182,8 +182,8 @@ public class OneTimePad {
 
     /**
      * XOR's two HEX strings of same length!!!
-     * */
-    private static String xorStringsOfSameLength(String one, String two){
+     */
+    private static String xorStringsOfSameLength(String one, String two) {
         String result = "";
         String helper;
         for (int i = 0; i < one.length() / 2; i++) {
@@ -198,7 +198,7 @@ public class OneTimePad {
 
     /**
      * One Character in String will result in two Hex Digits
-     * */
+     */
     private static String plainToHex(String string) {
         String result = "";
 
@@ -228,12 +228,10 @@ public class OneTimePad {
 
 
     /**
-     *
-     *
      * @param upperBound the upper bound the pared integer can be max.
-     * @param str the String that shall be checked if numeric and if in bounds
+     * @param str        the String that shall be checked if numeric and if in bounds
      * @return true if parsed integer is numeric and in bounds
-     * */
+     */
     private static boolean isNumericAndInBounds(String str, int upperBound) {
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) return false;
