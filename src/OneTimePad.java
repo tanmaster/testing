@@ -98,7 +98,8 @@ public class OneTimePad {
                 for (int j = 0; j < output.get(i).length(); j++) {
                     if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' '
                             && output.get(i).charAt(j) != ',' && output.get(i).charAt(j) != '.'
-                            && output.get(i).charAt(j) != '"') {
+                            && output.get(i).charAt(j) != '"' && output.get(i).charAt(j) != '?'
+                            && output.get(i).charAt(j) != '!' && output.get(i).charAt(j) != '-' ) {
                         /*
                          * this if is bad because it breaks at Characters like commas, spaces or exclamation marks
                          * therefore not every possible solution is being highlighted
