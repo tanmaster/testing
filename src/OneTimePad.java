@@ -36,9 +36,8 @@ public class OneTimePad {
         int[] numberTwo = new int[cipherStrings[0].length() / 2];
         int[] numberOneXORnumberTwo = new int[cipherStrings[0].length() / 2];
 
-        /*
-         * XOR'ing the two input strings. I tried the other ones too, these were just the last ones i tried.
-         */
+
+        //XOR'ing the two input strings.
         for (int i = 0; i < cipherStrings[0].length() / 2; i++) {
             numberOne[i] = Integer.parseInt(cipherStrings[0].substring(2 * i, 2 * i + 2), 16);
             numberTwo[i] = Integer.parseInt(cipherStrings[1].substring(2 * i, 2 * i + 2), 16);
