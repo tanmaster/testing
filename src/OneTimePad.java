@@ -42,7 +42,6 @@ public class OneTimePad {
             numberOne[i] = Integer.parseInt(cipherStrings[0].substring(2 * i, 2 * i + 2), 16);
             numberTwo[i] = Integer.parseInt(cipherStrings[1].substring(2 * i, 2 * i + 2), 16);
             numberOneXORnumberTwo[i] = numberOne[i] ^ numberTwo[i];
-            //System.out.printf(" " + numberOneXORnumberTwo[i]);
         }
 
 
@@ -97,7 +96,9 @@ public class OneTimePad {
             for (int i = 0; i < output.size(); i++) {
 
                 for (int j = 0; j < output.get(i).length(); j++) {
-                    if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' ') {
+                    if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' '
+                            && output.get(i).charAt(j) != ',' && output.get(i).charAt(j) != '.'
+                            && output.get(i).charAt(j) != '"') {
                         /*
                          * this if is bad because it breaks at Characters like commas, spaces or exclamation marks
                          * therefore not every possible solution is being highlighted
