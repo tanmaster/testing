@@ -3,7 +3,8 @@ import java.util.Scanner;
 
 /**
  * Created by Tan on 10.03.2016.
- * This is a small program that can be used to break Many-Time-Pads
+ * This is a small program that can be used to break Many-Time-Pads and was inspired by
+ * this project: https://github.com/JesseClarkND/CribDragging/tree/master/CribDragging
  * The usage is pretty straight forward, just follow the console instructions.
  * <p>
  * Two example Ciphers:
@@ -96,12 +97,9 @@ public class OneTimePad {
             for (int i = 0; i < output.size(); i++) {
 
                 for (int j = 0; j < output.get(i).length(); j++) {
-                    if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' '
-                            && output.get(i).charAt(j) != ',' && output.get(i).charAt(j) != '.'
-                            && output.get(i).charAt(j) != '"' && output.get(i).charAt(j) != '?'
-                            && output.get(i).charAt(j) != '!' && output.get(i).charAt(j) != '-' ) {
+                    if (!Character.isLetter(output.get(i).charAt(j)) && output.get(i).charAt(j) != ' ') {
                         /*
-                         * this if is bad because it breaks at Characters like commas, spaces or exclamation marks
+                         * this if is bad because it breaks at Characters like commas, dots or exclamation marks
                          * therefore not every possible solution is being highlighted
                          */
                         break;
