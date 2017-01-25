@@ -14,10 +14,71 @@ import java.util.Scanner;
  * <p>
  * Plain texts (I don't know which is which!)):
  * <p>
+ *     todo for when bored: implement live crib using arrow buttons in a GUI (with swing?)
  * On, he appears cheerful and relaxed. He has avoided the fate of fellow whistleblower Chelsea.
  * Minister, referring to Theresa May as a "a sort of Darth Vader in the United Kingdom", whose.
  */
 public class OneTimePad {
+
+    /**
+     * XOR's two HEX strings of same length!!!
+     */
+    private static String xorStringsOfSameLength(String one, String two) {
+        String result = "";
+        String helper;
+        for (int i = 0; i < one.length() / 2; i++) {
+            helper = Integer.toHexString(Integer.parseInt(one.substring(2 * i, 2 * i + 2), 16) ^ Integer.parseInt(two.substring(2 * i, 2 * i + 2), 16));
+            result += helper.length() == 1 ? "0" + helper : helper;
+        }
+
+        return result;
+
+    }
+
+    /**
+     * One Character in String will result in two Hex Digits
+     */
+    private static String plainToHex(String string) {
+        String result = "";
+
+        for (int i = 0; i < string.length(); i++) {
+            result += Integer.toHexString(string.charAt(i));
+        }
+
+        return result;
+    }
+
+    /**
+     * Transforms a String to its ASCII values. Result array has same length as input String and contains a value
+     * between 0 and 255 (I think), one for each Character in string.
+     *
+     * @param string input string
+     * @return an array that contains the values of every Character of string
+     */
+    private static int[] plainToIntArray(String string) {
+
+        int[] wordToInt = new int[string.length()];
+        for (int i = 0; i < string.length(); i++) {
+            wordToInt[i] = ((int) (string.charAt(i)));
+        }
+
+        return wordToInt;
+    }
+
+
+    /**
+     * @param upperBound the upper bound the pared integer can be max.
+     * @param str        the String that shall be checked if numeric and if in bounds
+     * @return true if parsed integer is numeric and in bounds
+     */
+    private static boolean isNumericAndInBounds(String str, int upperBound) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+
+        return Integer.parseInt(str) >= 0 && Integer.parseInt(str) < upperBound;
+    }
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String[] cipherStrings = new String[2];
@@ -141,7 +202,7 @@ public class OneTimePad {
 
 
 
-                 // Mix the current messages with the new found parts
+                // Mix the current messages with the new found parts
 
                 if (k) {
                     messageOne = messageOne.substring(0, Integer.valueOf(index)) + output.get(Integer.valueOf(index)) +
@@ -167,66 +228,6 @@ public class OneTimePad {
         System.out.println(xorStringsOfSameLength(cipherStrings[1], plainToHex(messageOne)));
 
 
-    }
-
-    /**
-     * XOR's two HEX strings of same length!!!
-     */
-    private static String xorStringsOfSameLength(String one, String two) {
-        String result = "";
-        String helper;
-        for (int i = 0; i < one.length() / 2; i++) {
-            helper = Integer.toHexString(Integer.parseInt(one.substring(2 * i, 2 * i + 2), 16) ^ Integer.parseInt(two.substring(2 * i, 2 * i + 2), 16));
-            result += helper.length() == 1 ? "0" + helper : helper;
-        }
-
-        return result;
-
-    }
-
-
-    /**
-     * One Character in String will result in two Hex Digits
-     */
-    private static String plainToHex(String string) {
-        String result = "";
-
-        for (int i = 0; i < string.length(); i++) {
-            result += Integer.toHexString(string.charAt(i));
-        }
-
-        return result;
-    }
-
-    /**
-     * Transforms a String to its ASCII values. Result array has same length as input String and contains a value
-     * between 0 and 255 (I think), one for each Character in string.
-     *
-     * @param string input string
-     * @return an array that contains the values of every Character of string
-     */
-    private static int[] plainToIntArray(String string) {
-
-        int[] wordToInt = new int[string.length()];
-        for (int i = 0; i < string.length(); i++) {
-            wordToInt[i] = ((int) (string.charAt(i)));
-        }
-
-        return wordToInt;
-    }
-
-
-    /**
-     * @param upperBound the upper bound the pared integer can be max.
-     * @param str        the String that shall be checked if numeric and if in bounds
-     * @return true if parsed integer is numeric and in bounds
-     */
-    private static boolean isNumericAndInBounds(String str, int upperBound) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)) return false;
-        }
-
-        return Integer.parseInt(str) >= 0 && Integer.parseInt(str) < upperBound;
     }
 
 }
